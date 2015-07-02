@@ -61,9 +61,9 @@ class GherkinLanguage
     end
 
     def download(path)
-      system "wget #{URL} -O /var/tmp/languagetool.zip"
+      system "wget --quiet #{URL} -O /var/tmp/languagetool.zip"
       FileUtils.mkdir_p path
-      system "unzip -u /var/tmp/languagetool.zip -d #{path}"
+      system "unzip -qq -u /var/tmp/languagetool.zip -d #{path}"
     end
 
     def start!
