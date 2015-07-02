@@ -1,0 +1,34 @@
+#!/usr/bin/env ruby
+require 'gherkin_language'
+require 'optparse'
+
+options = {}
+OptionParser.new do |opts|
+  opts.banner = 'Usage: gherkin_language [files]'
+  opts.on('-v', '--[no-]verbose', 'Run verbosely') do |verbose|
+    options[:verbose] = verbose
+  end
+  opts.on('--sentences', 'extract relevant sentences') do |sentences|
+    options[:sentences] = sentences
+  end
+  opts.on('--tag', 'tag words') do |tag|
+    options[:tag] = tag
+  end
+  opts.on('--no-cache', 'do not use cache') do |no_cache|
+    options[:no_cache] = no_cache
+  end
+end.parse!
+
+language = GherkinLanguage.new(options.key? :no_cache)
+
+if options.key? :sentences
+  ARGV.each { |file| puts language.extract_sentences language.parse file }
+  exit
+end
+if options.key? :tag
+  puts language.tag ARGV
+  exit
+end
+
+ARGV.each { |file| language.analyze file }
+exit language.report
