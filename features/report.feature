@@ -6,7 +6,7 @@ Feature: Report
   Background:
     Given a file named "report.rb" with:
       """
-      $LOADPATH << '../../lib'
+      $LOAD_PATH << '../../lib'
       require 'gherkin_language'
 
       no_cache = true

@@ -1,4 +1,4 @@
-Check Langauge of Gherkin Files
+Check Language of Gherkin Files
 ===============================
 
 [![Build Status](https://travis-ci.org/funkwerk/gherkin_language.svg)](https://travis-ci.org/funkwerk/gherkin_language)

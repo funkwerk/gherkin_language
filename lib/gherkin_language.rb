@@ -192,15 +192,15 @@ class GherkinLanguage
   end
 
   def extract_sentences(parsed)
-    def feature_names(input)
+    feature_names = lambda do |input|
       input.map { |feature| feature['name'] unless feature['name'] == '' }
     end
 
-    def descriptions(input)
+    descriptions = lambda do |input|
       input.map { |feature| feature['description'] unless feature['description'] == '' }
     end
 
-    sentences = feature_names(parsed) + descriptions(parsed) + scenario_names(parsed) + sentences(parsed)
+    sentences = feature_names.call(parsed) + descriptions.call(parsed) + scenario_names(parsed) + sentences(parsed)
     sentences.select! { |sentence| sentence }
     sentences.map { |sentence| sentence.gsub(/ «.+»/, '') }
   end
