@@ -3,7 +3,7 @@ Feature: Tag
   I want to tag all words from my features files
   so that I can build up a glossary or check against forbidden words
 
-  Background:
+  Background: Prepare Testee
     Given a file named "tag.rb" with:
       """
       $LOAD_PATH << '../../lib'
@@ -15,7 +15,7 @@ Feature: Tag
 
       """
 
-  Scenario: tag
+  Scenario: Tag words
     Given a file named "tag.feature" with:
       """
       Feature: Test

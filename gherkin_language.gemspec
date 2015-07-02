@@ -9,5 +9,6 @@ Gem::Specification.new do |s|
   s.files       = `git ls-files`.split("\n")
   s.executables = s.files.grep(%r{^bin/}) { |file| File.basename(file) }
   s.add_runtime_dependency 'gherkin', ['>= 2.12.2']
+  s.add_runtime_dependency 'term-ansicolor', ['>= 1.3.2']
   s.add_development_dependency 'aruba', ['>= 0.6.2']
 end
