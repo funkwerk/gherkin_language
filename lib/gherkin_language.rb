@@ -1,3 +1,4 @@
+# encoding: utf-8
 require 'gherkin/formatter/json_formatter'
 require 'gherkin/parser/parser'
 require 'rexml/document'
