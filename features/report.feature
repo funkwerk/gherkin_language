@@ -30,7 +30,7 @@ Feature: Report
       """
       [misspelling] EN_A_VS_AN
         Use 'a' instead of 'an' if the following word doesn't start with a vowel sound, e.g. 'a sentence', 'a university'
-        Context: Given an test when execute then pass  
+        Context: Given an test when execute then pass
         Replacements: a
         References: test.feature
 
@@ -50,7 +50,7 @@ Feature: Report
       """
       [misspelling] MORFOLOGIK_RULE_EN_US
         Possible spelling mistake found
-        Context: Given a test when exicute then pass  
+        Context: Given a test when exicute then pass
         Replacements: execute
         References: test.feature
       1 unknown words: exicute

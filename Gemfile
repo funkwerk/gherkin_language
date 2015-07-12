@@ -1,6 +1,8 @@
 source 'https://rubygems.org'
 gem 'rubocop'
 gem 'gherkin'
+gem 'gherkin_lint'
+gem 'gherkin_format'
 gem 'rake'
 gem 'aruba'
 gem 'term-ansicolor'

@@ -115,7 +115,7 @@ class GherkinLanguage
       doc.elements.each '//error' do |error|
         errors.push Error.new(
           error.attributes['category'],
-          error.attributes['context'],
+          error.attributes['context'].strip,
           error.attributes['locqualityissuetype'],
           error.attributes['msg'],
           error.attributes['replacements'],
@@ -213,7 +213,7 @@ class GherkinLanguage
   end
 
   def report
-    return if @references.keys.empty?
+    return 0 if @references.keys.empty?
     language = LanguageToolProcess.new
     language.start!
 
