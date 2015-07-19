@@ -75,6 +75,37 @@ Feature: Sentences
       Given 2 when 4 then 6
       """
 
+  Scenario: Extract Sentences from outlines with multiple examples
+    Given a file named "test.feature" with:
+      """
+      Feature: Test
+        Scenario Outline: Test
+          When <A> <B>
+          Then <C>
+
+          Examples: Table
+            | A |
+            | 1 |
+            | 2 |
+
+          Examples: Second Table
+            | B | C |
+            | 3 | 5 |
+            | 4 | 6 |
+      """
+    When I run `ruby extract_sentences.rb`
+    Then it should pass with:
+      """
+      Test
+      Test
+      Table
+      Second Table
+      When 1 3 then 5
+      When 1 4 then 6
+      When 2 3 then 5
+      When 2 4 then 6
+      """
+
   Scenario: Extract Sentences considers feature description
     Given a file named "test.feature" with:
       """

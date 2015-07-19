@@ -303,12 +303,13 @@ class GherkinLanguage
         end
         sentence = terms.join ' '
         if scenario.key? 'examples'
-          # TODO: support for multiple examples?
+          prototypes = [sentence.strip]
           scenario['examples'].each do |example|
             sentences.push example['name'] unless example['name'].empty?
             sentences.push example['description'] unless example['description'].empty?
-            expand_outlines(sentence.strip, example).map { |expanded| sentences.push expanded }
+            prototypes = prototypes.map { |prototype| expand_outlines(prototype, example) }.flatten
           end
+          sentences += prototypes
         else
           sentences.push sentence.strip
         end
