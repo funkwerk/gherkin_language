@@ -12,7 +12,8 @@ Feature: Correct
       no_cache = true
       language = GherkinLanguage.new no_cache
       language.analyze 'test.feature'
-      exit language.report
+      result = language.report
+      exit result unless result.nil?
 
       """
 
