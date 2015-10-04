@@ -1,6 +1,8 @@
 # encoding: utf-8
 require 'gherkin/formatter/json_formatter'
 require 'gherkin/parser/parser'
+require 'gherkin_language/error'
+require 'gherkin_language/language_tool_process'
 require 'rexml/document'
 require 'stringio'
 require 'multi_json'
@@ -14,142 +16,6 @@ require 'digest'
 
 # gherkin utilities
 class GherkinLanguage
-  # This service class provides access to language tool process.
-  class LanguageToolProcess
-    attr_accessor :errors, :unknown_words
-
-    VERSION = 'LanguageTool-3.0'
-    URL = "https://www.languagetool.org/download/#{VERSION}.zip"
-
-    # This value entity class represents a language error
-    class Error
-      attr_accessor :category, :context, :issuetype, :message, :replacements, :rule, :from_y, :to_y
-
-      def initialize(category, context, issuetype, message, replacements, rule, from_y, to_y)
-        @category = category
-        @context = context
-        @issuetype = issuetype
-        @message = message
-        @replacements = replacements
-        @rule = rule
-        @from_y = from_y
-        @to_y = to_y
-      end
-
-      def str(references)
-        (red("[#{@issuetype}] #{@rule}\n") +
-         "  #{@message}\n  Context: #{@context}\n  Replacements: #{@replacements}\n  References: #{references * ', '}\n")
-      end
-    end
-
-    def initialize
-      path = Dir.tmpdir
-      download path unless File.exist? "#{path}/#{VERSION}/languagetool-commandline.jar"
-      @path = path
-      @p = nil
-      @reference_line = 0
-      @errors = []
-      @unknown_words = []
-      use_user_glossary "#{path}/#{VERSION}" if File.exist? '.glossary'
-    end
-
-    def use_user_glossary(path)
-      resource_path = "#{path}/org/languagetool/resource/en"
-      system "cp #{resource_path}/added.txt #{resource_path}/added.copy && cp .glossary #{resource_path}/added.txt"
-      at_exit do
-        system "cp #{resource_path}/added.copy #{resource_path}/added.txt"
-      end
-    end
-
-    def download(path)
-      system "wget --quiet #{URL} -O /var/tmp/languagetool.zip"
-      FileUtils.mkdir_p path
-      system "unzip -qq -u /var/tmp/languagetool.zip -d #{path}"
-    end
-
-    def start!
-      @errors = []
-      @unknown_words = []
-      @reference_line = 0
-      Dir.chdir("#{@path}/#{VERSION}/") do
-        @p = IO.popen('java -jar languagetool-commandline.jar --list-unknown --api --language en-US -', 'r+')
-      end
-    end
-
-    def tag(sentences)
-      output = ''
-      Dir.chdir("#{@path}/#{VERSION}/") do
-        p = IO.popen('java -jar languagetool-commandline.jar --taggeronly --api --language en-US -', 'r+')
-        sentences.each { |sentence| p.write sentence }
-        p.close_write
-        line = p.readline
-        loop do
-          break if line == "<!--\n"
-          output << line
-          line = p.readline
-        end
-        p.close
-      end
-      output.gsub!(' ', "\n")
-      output.gsub!(']', "]\n")
-      output.gsub!("\n\n", "\n")
-      output
-    end
-
-    def check_paragraph(paragraph)
-      start_line = @reference_line
-      send paragraph
-      end_line = @reference_line
-      send "\n\n"
-      Range.new(start_line, end_line)
-    end
-
-    def send(sentence)
-      @reference_line += sentence.count "\n"
-      @p.write sentence
-    end
-
-    def parse_errors(result)
-      doc = REXML::Document.new result
-      errors = []
-      doc.elements.each '//error' do |error|
-        errors.push Error.new(
-          error.attributes['category'],
-          error.attributes['context'].strip,
-          error.attributes['locqualityissuetype'],
-          error.attributes['msg'],
-          error.attributes['replacements'],
-          error.attributes['ruleId'],
-          error.attributes['fromy'].to_i,
-          error.attributes['toy'].to_i)
-      end
-      errors
-    end
-
-    def parse_unknown_words(result)
-      doc = REXML::Document.new result
-      errors = []
-      doc.elements.each '//unknown_words/word' do |error|
-        errors.push error.text
-      end
-      errors
-    end
-
-    def stop!
-      @p.close_write
-      errors = ''
-      line = @p.readline
-      loop do
-        break if line == "<!--\n"
-        errors << line
-        line = @p.readline
-      end
-      @errors = parse_errors errors
-      @unknown_words = parse_unknown_words errors
-      @p.close
-    end
-  end
-
   def initialize(no_cache = false)
     path = "~/.gherkin_language/#{LanguageToolProcess::VERSION}/accepted_paragraphs.yml"
     @settings_path = File.expand_path path
@@ -299,21 +165,11 @@ class GherkinLanguage
         next unless scenario.key? 'steps'
         terms = background.dup
         if scenario['type'] == 'background'
-          scenario['steps'].each do |step|
-            new_terms = [step['keyword'], step['name']].join
-            new_terms = uncapitalize(new_terms) unless terms.empty?
-            background.push new_terms
-          end
+          background.push extract_terms_from_scenario(scenario['steps'], terms)
           next
         end
 
-        scenario['steps'].each do |step|
-          keyword = step['keyword']
-          keyword = 'and ' unless background.empty? || keyword != 'Given '
-          new_terms = [keyword, step['name']].join
-          new_terms = uncapitalize(new_terms) unless terms.empty?
-          terms.push new_terms
-        end
+        terms.push extract_terms_from_scenario(scenario['steps'], background)
         sentence = terms.join ' '
         if scenario.key? 'examples'
           prototypes = [sentence.strip]
@@ -329,6 +185,17 @@ class GherkinLanguage
       end
     end
     sentences
+  end
+
+  def extract_terms_from_scenario(steps, background)
+    steps.map do |step|
+      keyword = step['keyword']
+      keyword = 'and ' unless background.empty? || keyword != 'Given '
+      terms = [keyword, step['name']].join
+      terms = uncapitalize(terms) unless background.empty?
+      background = terms
+      terms
+    end.flatten
   end
 
   def uncapitalize(term)

@@ -17,7 +17,7 @@ task test: :rubocop
 task test: :cucumber
 
 desc 'Publishes the Gem'
-task :push do
+task push: :build do
   sh 'gem push gherkin_language-0.0.7.gem'
 end
 
