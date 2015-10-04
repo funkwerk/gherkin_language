@@ -16,7 +16,7 @@ require 'digest'
 
 # gherkin utilities
 class GherkinLanguage
-  def initialize(no_cache = false)
+  def initialize(no_cache = false, ngram = false)
     path = "~/.gherkin_language/#{LanguageToolProcess::VERSION}/accepted_paragraphs.yml"
     @settings_path = File.expand_path path
     @accepted_paragraphs = {}
@@ -28,6 +28,7 @@ class GherkinLanguage
     @references = {}
     @line_to_reference = {}
     @exceptions = []
+    @ngram = ngram
   end
 
   def ignore(exception)
@@ -85,7 +86,7 @@ class GherkinLanguage
 
   def report
     return 0 if @references.keys.empty?
-    language = LanguageToolProcess.new
+    language = LanguageToolProcess.new @ngram
     language.start!
 
     @references.keys.each do |sentence|

@@ -16,17 +16,24 @@ require 'digest'
 class LanguageToolProcess
   attr_accessor :errors, :unknown_words
 
-  VERSION = 'LanguageTool-3.0'
+  VERSION = 'LanguageTool-3.1'
   URL = "https://www.languagetool.org/download/#{VERSION}.zip"
+  NGRAM_VERSION = 'ngrams-en-20150817'
+  NGRAM_URL = "https://languagetool.org/download/ngram-data/#{NGRAM_VERSION}.zip"
 
-  def initialize
+  def initialize(ngrams = false)
     path = Dir.tmpdir
-    download path unless File.exist? "#{path}/#{VERSION}/languagetool-commandline.jar"
+    download(path, URL) unless File.exist? "#{path}/#{VERSION}/languagetool-commandline.jar"
+    if ngrams
+      @ngrams_path = "#{path}/#{NGRAM_VERSION}"
+      download("#{@ngrams_path}/en", NGRAM_URL) unless File.exist? @ngrams_path
+    end
     @path = path
     @p = nil
     @reference_line = 0
     @errors = []
     @unknown_words = []
+    @ngrams = ngrams
     use_user_glossary "#{path}/#{VERSION}" if File.exist? '.glossary'
   end
 
@@ -38,10 +45,11 @@ class LanguageToolProcess
     end
   end
 
-  def download(path)
-    system "wget --quiet #{URL} -O /var/tmp/languagetool.zip"
+  def download(path, url)
+    system "wget --quiet #{url} -O /var/tmp/languagetool.zip"
     FileUtils.mkdir_p path
     system "unzip -qq -u /var/tmp/languagetool.zip -d #{path}"
+    system 'rm /var/tmp/languagetool.zip'
   end
 
   def start!
@@ -49,7 +57,9 @@ class LanguageToolProcess
     @unknown_words = []
     @reference_line = 0
     Dir.chdir("#{@path}/#{VERSION}/") do
-      @p = IO.popen('java -jar languagetool-commandline.jar --list-unknown --api --language en-US -', 'r+')
+      command = 'java -jar languagetool-commandline.jar --list-unknown --api --language en-US'
+      command += " --languagemodel #{@ngrams_path}" if @ngrams
+      @p = IO.popen("#{command} -", 'r+')
     end
   end
 

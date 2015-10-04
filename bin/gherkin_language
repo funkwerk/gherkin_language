@@ -17,9 +17,12 @@ OptionParser.new do |opts|
   opts.on('--no-cache', 'do not use cache') do |no_cache|
     options[:no_cache] = no_cache
   end
+  opts.on('--ngram', 'check based on ngrams') do |ngram|
+    options[:ngram] = ngram
+  end
 end.parse!
 
-language = GherkinLanguage.new(options.key? :no_cache)
+language = GherkinLanguage.new(options.key?(:no_cache), options.key?(:ngram))
 
 if options.key? :sentences
   ARGV.each { |file| puts language.extract_sentences language.parse file }
