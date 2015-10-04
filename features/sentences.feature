@@ -80,18 +80,18 @@ Feature: Sentences
       """
       Feature: Test
         Scenario Outline: Test
-          When <A> <B>
-          Then <C>
+          When <A>
+          Then <B>
 
           Examples: Table
-            | A |
-            | 1 |
-            | 2 |
+            | A | B |
+            | 1 | 3 |
+            | 2 | 4 |
 
           Examples: Second Table
-            | B | C |
-            | 3 | 5 |
-            | 4 | 6 |
+            | B | A |
+            | 5 | 7 |
+            | 6 | 8 |
       """
     When I run `ruby extract_sentences.rb`
     Then it should pass with:
@@ -99,11 +99,11 @@ Feature: Sentences
       Test
       Test
       Table
+      When 1 then 3
+      When 2 then 4
       Second Table
-      When 1 3 then 5
-      When 1 4 then 6
-      When 2 3 then 5
-      When 2 4 then 6
+      When 7 then 5
+      When 8 then 6
       """
 
   Scenario: Extract Sentences considers feature description

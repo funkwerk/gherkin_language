@@ -160,8 +160,7 @@ class GherkinLanguage
     background = []
     input.each do |features|
       next unless features.key? 'elements'
-      elements = features['elements']
-      elements.each do |scenario|
+      features['elements'].each do |scenario|
         next unless scenario.key? 'steps'
         terms = background.dup
         if scenario['type'] == 'background'
@@ -170,17 +169,11 @@ class GherkinLanguage
         end
 
         terms.push extract_terms_from_scenario(scenario['steps'], background)
-        sentence = terms.join ' '
+        sentence = terms.join(' ').strip
         if scenario.key? 'examples'
-          prototypes = [sentence.strip]
-          scenario['examples'].each do |example|
-            sentences.push example['name'] unless example['name'].empty?
-            sentences.push example['description'] unless example['description'].empty?
-            prototypes = prototypes.map { |prototype| expand_outlines(prototype, example) }.flatten
-          end
-          sentences += prototypes
+          sentences += extract_examples(scenario['examples'], sentence)
         else
-          sentences.push sentence.strip
+          sentences.push sentence
         end
       end
     end
@@ -195,6 +188,16 @@ class GherkinLanguage
       terms = uncapitalize(terms) unless background.empty?
       background = terms
       terms
+    end.flatten
+  end
+
+  def extract_examples(examples, prototype)
+    examples.map do |example|
+      sentences = []
+      sentences.push example['name'] unless example['name'].empty?
+      sentences.push example['description'] unless example['description'].empty?
+      sentences += expand_outlines(prototype, example)
+      sentences
     end.flatten
   end
 
