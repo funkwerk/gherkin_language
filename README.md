@@ -23,6 +23,8 @@ To tag all words used, start it with `--tag`. This allows to build up a glossary
 
 To ignore specific rules, mention them with an `--ignore RULE`. This allows to bypass the checks.
 
+To check for confused words, based on ngrams, add `--ngram`. Please note, that it requires much disk space and time.
+
 
 Glossary
 --------
