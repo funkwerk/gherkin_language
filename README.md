@@ -21,6 +21,8 @@ To just extract the sentences, start it with `--sentences`. This could be helpfu
 
 To tag all words used, start it with `--tag`. This allows to build up a glossary based on the feature files provided.
 
+To ignore specific rules, mention them with an `--ignore RULE`. This allows to bypass the checks.
+
 
 Glossary
 --------

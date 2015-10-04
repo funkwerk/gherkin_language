@@ -161,6 +161,11 @@ class GherkinLanguage
     end
     @references = {}
     @line_to_reference = {}
+    @exceptions = []
+  end
+
+  def ignore(exception)
+    @exceptions.push exception
   end
 
   def analyze(file)
@@ -228,6 +233,9 @@ class GherkinLanguage
     used_refs = Set.new []
     errors.each do |error|
       used_refs.add @line_to_reference[error.from_y]
+    end
+    errors.select! { |error| !@exceptions.include? error.rule }
+    errors.each do |error|
       local_refs = @references[@line_to_reference[error.from_y]]
       puts error.str local_refs
     end
@@ -235,6 +243,13 @@ class GherkinLanguage
     puts red "#{unknown_words.count} unknown words: #{unknown_words * ', '}" unless unknown_words.empty?
     return -1 unless unknown_words.empty?
 
+    write_accepted_paragraphs used_refs
+
+    return -1 unless errors.empty?
+    0
+  end
+
+  def write_accepted_paragraphs(used_refs)
     @references.each do |sentence, _refs|
       next if used_refs.include? sentence
       key = :without_glossary
@@ -248,8 +263,6 @@ class GherkinLanguage
     File.open(@settings_path, 'w') do |settings_file|
       settings_file.write @accepted_paragraphs.to_yaml
     end
-    return -1 unless errors.empty?
-    0
   end
 
   def to_json(input, file = 'generated.feature')
