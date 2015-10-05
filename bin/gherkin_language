@@ -20,6 +20,9 @@ OptionParser.new do |opts|
   opts.on('--ngram', 'check based on ngrams') do |ngram|
     options[:ngram] = ngram
   end
+  opts.on('--ignore [EXCEPTIONS]', 'ignore exceptions, Separated by ","') do |exceptions|
+    options[:ignore] = exceptions.split ','
+  end
 end.parse!
 
 language = GherkinLanguage.new(options.key?(:no_cache), options.key?(:ngram))
@@ -34,4 +37,8 @@ if options.key? :tag
 end
 
 ARGV.each { |file| language.analyze file }
+
+if options.key? :ignore
+  options[:ignore].each { |exception| language.ignore exception }
+end
 exit language.report

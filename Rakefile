@@ -18,7 +18,7 @@ task test: :cucumber
 
 desc 'Publishes the Gem'
 task push: :build do
-  sh 'gem push gherkin_language-0.0.8.gem'
+  sh 'gem push gherkin_language-0.0.9.gem'
 end
 
 desc 'Checks ruby style'
