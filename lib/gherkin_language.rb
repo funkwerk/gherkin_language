@@ -46,6 +46,33 @@ class GherkinLanguage
     end
   end
 
+  def determine_readability_by_file(files)
+    puts "Readability. Sorted from best to worst readable feature\n\n" if files.length > 1
+    readability_by_file = {}
+    files.each do |file|
+      sentences = extract_sentences parse(file)
+      readability_by_file[file] = readability sentences
+    end
+    average_readability = 0
+    readability_by_file.sort { |lhs, rhs| lhs[1] <=> rhs[1] }.reverse_each do |file, rating|
+      puts "#{rating.round}: #{file}"
+      average_readability += rating / files.length
+    end
+    puts "\n#{files.length} files analyzed. Average readability is #{average_readability.round}" if files.length > 1
+  end
+
+  def readability(sentences)
+    require 'syllables'
+
+    total_words = 0
+    total_syllabels = 0
+    Syllables.new(sentences.join '\n').to_h.each do |_word, syllabels|
+      total_words += 1
+      total_syllabels += syllabels
+    end
+    206.835 - 1.015 * (total_words / sentences.length) - 84.6 * (total_syllabels / total_words)
+  end
+
   def accepted?(sentence)
     return false if @accepted_paragraphs.nil?
     key = :without_glossary

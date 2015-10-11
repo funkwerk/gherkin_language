@@ -23,6 +23,9 @@ OptionParser.new do |opts|
   opts.on('--ignore [EXCEPTIONS]', 'ignore exceptions, Separated by ","') do |exceptions|
     options[:ignore] = exceptions.split ','
   end
+  opts.on('--readability', 'readbility by file') do |readability|
+    options[:readability] = readability
+  end
 end.parse!
 
 language = GherkinLanguage.new(options.key?(:no_cache), options.key?(:ngram))
@@ -35,6 +38,8 @@ if options.key? :tag
   puts language.tag ARGV
   exit
 end
+
+language.determine_readability_by_file(ARGV) if options.key? :readability
 
 ARGV.each { |file| language.analyze file }
 
