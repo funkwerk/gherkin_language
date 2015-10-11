@@ -25,6 +25,8 @@ To ignore specific rules, mention them with an `--ignore RULE`. This allows to b
 
 To check for confused words, based on ngrams, add `--ngram`. Please note, that it requires much disk space and time.
 
+Get a readability report using `--readability`. It indicates, which files are not good readable.
+
 
 Glossary
 --------
