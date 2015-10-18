@@ -28,7 +28,7 @@ end
 
 task :cucumber do
   options = %w()
-  options.push '--tags ~slow' unless ENV['slow']
+  options.push '--tags ~@slow' unless ENV['slow']
   sh "cucumber #{options * ' '}"
 end
 
