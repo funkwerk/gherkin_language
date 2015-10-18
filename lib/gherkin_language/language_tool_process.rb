@@ -77,9 +77,9 @@ class LanguageToolProcess
       end
       p.close
     end
-    output.gsub!(' ', "\n")
-    output.gsub!(']', "]\n")
-    output.gsub!("\n\n", "\n")
+    output.tr!(' ', "\n")
+    output.tr!(']', "]\n")
+    output.tr!("\n\n", "\n")
     output
   end
 
