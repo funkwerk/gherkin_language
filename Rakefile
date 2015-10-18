@@ -27,7 +27,9 @@ task :rubocop do
 end
 
 task :cucumber do
-  sh 'cucumber'
+  options = %w()
+  options.push '--tags ~slow' unless ENV['slow']
+  sh "cucumber #{options * ' '}"
 end
 
 task :lint do

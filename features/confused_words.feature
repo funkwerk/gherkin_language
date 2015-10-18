@@ -1,3 +1,4 @@
+@slow
 Feature: Confused Words
   As a Business Analyst
   I want to be informed for confused words
