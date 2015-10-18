@@ -12,7 +12,7 @@ Feature: Readability
       no_cache = true
       ngrams = false
       language = GherkinLanguage.new(no_cache, ngrams)
-      language.determine_readability_by_file %w(default.feature unreadable.feature)
+      language.determine_readability_by_file %w(default.feature test.feature)
       exit language.report
 
       """
@@ -25,8 +25,8 @@ Feature: Readability
           Then pass
       """
 
-  Scenario: Sort by readability
-    Given a file named "unreadable.feature" with:
+  Scenario: Sort poor readable
+    Given a file named "test.feature" with:
       """
       Feature: Unreadable busting complexity check
         Scenario: nonsense and unreadable
@@ -40,8 +40,28 @@ Feature: Readability
       Readability. Sorted from best to worst readable feature
 
       119: default.feature
-      30: unreadable.feature
+      30: test.feature
 
       2 files analyzed. Average readability is 74
+
+      """
+
+  Scenario: Sort highly readable
+    Given a file named "test.feature" with:
+      """
+      Feature: Test
+        Scenario: Test
+          When execute
+          Then test
+      """
+    When I run `ruby readability.rb`
+    Then it should pass with exactly:
+      """
+      Readability. Sorted from best to worst readable feature
+
+      120: test.feature
+      119: default.feature
+
+      2 files analyzed. Average readability is 120
 
       """
