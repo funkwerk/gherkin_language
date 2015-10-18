@@ -26,26 +26,15 @@ Feature: Tag
     Then it should pass with exactly:
       """
       <S>
-      [[[/null]
-      "["/``]
-      Test[Test/NNP]
-      "["/'']
-      ,[,/,,O]
-      "["/``,O]
-      Tag[tag/NN:UN,tag/VB,tag/VBP]
-      "["/'']
-      ,[,/,,O]
-      "["/``,O]
-      Given[Given/NNP,B-VP]
+      [[[/null]"["/``]Test[Test/NNP]"["/''],[,/,,O]
+      "["/``,O]Tag[tag/NN:UN,tag/VB,tag/VBP]"["/''],[,/,,O]
+      "["/``,O]Given[Given/NNP,B-VP]
       a[a/DT,B-NP-singular]
       test[test/JJ,test/NN,test/VB,test/VBP,E-NP-singular]
       when[when/WRB,B-ADVP]
       execute[execute/VB,execute/VBP,B-VP]
       then[then/JJ,then/NN,then/RB,I-VP]
-      pass[pass/JJ,pass/NN,pass/VB,pass/VBP,I-VP]
-      "["/'',B-ADVP]
-      ]
-      [</S>,O]
+      pass[pass/JJ,pass/NN,pass/VB,pass/VBP,I-VP]"["/'',B-ADVP]][</S>,O]
 
 
       """

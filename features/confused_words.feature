@@ -34,6 +34,7 @@ Feature: Confused Words
         Context: Given I do not now where it is when execute then pass
         Replacements: know
         References: test.feature
+
       """
 
   Scenario: Accept non confused words
