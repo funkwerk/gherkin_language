@@ -16,10 +16,10 @@ require 'digest'
 class LanguageToolProcess
   attr_accessor :errors, :unknown_words
 
-  VERSION = 'LanguageTool-3.1'
-  URL = "https://www.languagetool.org/download/#{VERSION}.zip"
-  NGRAM_VERSION = 'ngrams-en-20150817'
-  NGRAM_URL = "https://languagetool.org/download/ngram-data/#{NGRAM_VERSION}.zip"
+  VERSION = 'LanguageTool-3.1'.freeze
+  URL = "https://www.languagetool.org/download/#{VERSION}.zip".freeze
+  NGRAM_VERSION = 'ngrams-en-20150817'.freeze
+  NGRAM_URL = "https://languagetool.org/download/ngram-data/#{NGRAM_VERSION}.zip".freeze
 
   def initialize(ngrams = false)
     path = Dir.tmpdir

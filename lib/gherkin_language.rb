@@ -1,4 +1,6 @@
 # encoding: utf-8
+gem 'gherkin', '2.12.2'
+
 require 'gherkin/formatter/json_formatter'
 require 'gherkin/parser/parser'
 require 'gherkin_language/error'
@@ -66,7 +68,7 @@ class GherkinLanguage
 
     total_words = 0
     total_syllabels = 0
-    Syllables.new(sentences.join '\n').to_h.each do |_word, syllabels|
+    Syllables.new(sentences.join('\n')).to_h.each do |_word, syllabels|
       total_words += 1
       total_syllabels += syllabels
     end
@@ -76,7 +78,7 @@ class GherkinLanguage
   def accepted?(sentence)
     return false if @accepted_paragraphs.nil?
     key = :without_glossary
-    key = hash(File.read '.glossary') if File.exist? '.glossary'
+    key = hash(File.read('.glossary')) if File.exist? '.glossary'
 
     return false unless @accepted_paragraphs.key? key
     @accepted_paragraphs[key].include? hash sentence
@@ -147,7 +149,7 @@ class GherkinLanguage
     @references.each do |sentence, _refs|
       next if used_refs.include? sentence
       key = :without_glossary
-      key = hash(File.read '.glossary') if File.exist? '.glossary'
+      key = hash(File.read('.glossary')) if File.exist? '.glossary'
 
       @accepted_paragraphs[key] = Set.new [] unless @accepted_paragraphs.key? key
       @accepted_paragraphs[key].add hash sentence
