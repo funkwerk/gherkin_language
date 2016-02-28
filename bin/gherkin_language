@@ -26,9 +26,15 @@ OptionParser.new do |opts|
   opts.on('--readability', 'readbility by file') do |readability|
     options[:readability] = readability
   end
+  opts.on('--unknown-words', 'determine unknown words') do |unknown_words|
+    options[:unknown_words] = unknown_words
+  end
 end.parse!
 
-language = GherkinLanguage.new(options.key?(:no_cache), options.key?(:ngram))
+language = GherkinLanguage.new(
+  options.key?(:no_cache),
+  options.key?(:ngram),
+  options.key?(:unknown_words))
 
 if options.key? :sentences
   ARGV.each { |file| puts language.extract_sentences language.parse file }

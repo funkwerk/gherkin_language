@@ -39,3 +39,17 @@ Feature: Correct
       """
 
       """
+
+  Scenario: Scenario without Given
+    Given a file named "test.feature" with:
+      """
+      Feature: Test
+        Scenario: Test
+          When execute
+          Then verify
+      """
+    When I run `ruby report.rb`
+    Then it should pass with exactly:
+      """
+
+      """

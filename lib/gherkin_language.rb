@@ -18,7 +18,7 @@ require 'digest'
 
 # gherkin utilities
 class GherkinLanguage
-  def initialize(no_cache = false, ngram = false)
+  def initialize(no_cache = false, ngram = false, unknown_words = false)
     path = "~/.gherkin_language/#{LanguageToolProcess::VERSION}/accepted_paragraphs.yml"
     @settings_path = File.expand_path path
     @accepted_paragraphs = {}
@@ -29,8 +29,9 @@ class GherkinLanguage
     end
     @references = {}
     @line_to_reference = {}
-    @exceptions = []
+    @exceptions = %w(SENTENCE_FRAGMENT) # sentences starting with 'When' are perfectly fine in gherkin
     @ngram = ngram
+    @unknown_words = unknown_words
   end
 
   def ignore(exception)
@@ -115,7 +116,7 @@ class GherkinLanguage
 
   def report
     return 0 if @references.keys.empty?
-    language = LanguageToolProcess.new @ngram
+    language = LanguageToolProcess.new(@ngram, @unknown_words)
     language.start!
 
     @references.keys.each do |sentence|

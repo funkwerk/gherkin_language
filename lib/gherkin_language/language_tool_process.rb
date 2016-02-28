@@ -21,7 +21,7 @@ class LanguageToolProcess
   NGRAM_VERSION = 'ngrams-en-20150817'.freeze
   NGRAM_URL = "https://languagetool.org/download/ngram-data/#{NGRAM_VERSION}.zip".freeze
 
-  def initialize(ngrams = false)
+  def initialize(ngrams = false, unknown_words = false)
     path = Dir.tmpdir
     download(path, URL) unless File.exist? "#{path}/#{VERSION}/languagetool-commandline.jar"
     if ngrams
@@ -32,6 +32,7 @@ class LanguageToolProcess
     @p = nil
     @reference_line = 0
     @errors = []
+    @check_unknown_words = unknown_words
     @unknown_words = []
     @ngrams = ngrams
     use_user_glossary "#{path}/#{VERSION}" if File.exist? '.glossary'
@@ -57,8 +58,10 @@ class LanguageToolProcess
     @unknown_words = []
     @reference_line = 0
     Dir.chdir("#{@path}/#{VERSION}/") do
-      command = 'java -jar languagetool-commandline.jar --list-unknown --api --language en-US'
-      command += " --languagemodel #{@ngrams_path}" if @ngrams
+      command = 'java -jar languagetool-commandline.jar '
+      command += '--list-unknown ' if @check_unknown_words
+      command += '--api --language en-US '
+      command += "--languagemodel #{@ngrams_path}" if @ngrams
       @p = IO.popen("#{command} -", 'r+')
     end
   end

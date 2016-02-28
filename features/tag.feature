@@ -10,7 +10,9 @@ Feature: Tag
       require 'gherkin_language'
 
       no_cache = true
-      language = GherkinLanguage.new no_cache
+      ngram = false
+      unknown_words = true
+      language = GherkinLanguage.new no_cache, ngram, unknown_words
       puts language.tag ['tag.feature']
 
       """
@@ -35,6 +37,4 @@ Feature: Tag
       execute[execute/VB,execute/VBP,B-VP]
       then[then/JJ,then/NN,then/RB,I-VP]
       pass[pass/JJ,pass/NN,pass/VB,pass/VBP,I-VP]"["/'',B-ADVP]][</S>,O]
-
-
       """

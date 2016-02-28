@@ -10,7 +10,9 @@ Feature: Glossary
       require 'gherkin_language'
 
       no_cache = true
-      language = GherkinLanguage.new no_cache
+      ngram = false
+      unknown_words = true
+      language = GherkinLanguage.new no_cache, ngram, unknown_words
       language.analyze 'test.feature'
       exit language.report
 

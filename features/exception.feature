@@ -14,6 +14,7 @@ Feature: Exception
       language.ignore 'EN_A_VS_AN'
       language.analyze 'test.feature'
       exit language.report
+
       """
 
   Scenario: Accept ignored rules
@@ -48,6 +49,5 @@ Feature: Exception
         Context: Given a test when exicute then pass
         Replacements: execute
         References: test.feature
-      1 unknown words: exicute
 
       """
