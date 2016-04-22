@@ -140,7 +140,11 @@ class LanguageToolProcess
     loop do
       break if line == "<!--\n"
       errors << line
-      line = @p.readline
+      begin
+        line = @p.readline
+      rescue EOFError
+        break
+      end
     end
     @errors = parse_errors errors
     @unknown_words = parse_unknown_words errors
