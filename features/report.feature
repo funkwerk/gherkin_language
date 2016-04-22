@@ -22,7 +22,7 @@ Feature: Report
     Given a file named "test.feature" with:
       """
       Feature: Test
-        Scenario: Tag
+        Scenario: Scenario
           Given an test
           When execute
           Then pass
@@ -32,7 +32,7 @@ Feature: Report
       """
       [misspelling] EN_A_VS_AN
         Use 'a' instead of 'an' if the following word doesn't start with a vowel sound, e.g. 'a sentence', 'a university'
-        Context: Given an test when execute then pass
+        Context: Test  Scenario  Given an test when execute then pass
         Replacements: a
         References: test.feature
 
@@ -42,7 +42,7 @@ Feature: Report
     Given a file named "test.feature" with:
       """
       Feature: Test
-        Scenario: Tag
+        Scenario: Scenario
           Given a test
           When exicute
           Then pass
@@ -52,7 +52,7 @@ Feature: Report
       """
       [misspelling] MORFOLOGIK_RULE_EN_US
         Possible spelling mistake found
-        Context: Given a test when exicute then pass
+        Context: Test  Scenario  Given a test when exicute then pass
         Replacements: execute
         References: test.feature
       1 unknown words: exicute

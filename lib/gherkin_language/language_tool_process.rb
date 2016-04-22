@@ -16,7 +16,7 @@ require 'digest'
 class LanguageToolProcess
   attr_accessor :errors, :unknown_words
 
-  VERSION = 'LanguageTool-3.2'.freeze
+  VERSION = 'LanguageTool-3.3'.freeze
   URL = "https://www.languagetool.org/download/#{VERSION}.zip".freeze
   NGRAM_VERSION = 'ngrams-en-20150817'.freeze
   NGRAM_URL = "https://languagetool.org/download/ngram-data/#{NGRAM_VERSION}.zip".freeze
@@ -60,23 +60,27 @@ class LanguageToolProcess
     Dir.chdir("#{@path}/#{VERSION}/") do
       command = 'java -jar languagetool-commandline.jar '
       command += '--list-unknown ' if @check_unknown_words
-      command += '--api --language en-US '
+      command += '--api --language en-us '
       command += "--languagemodel #{@ngrams_path}" if @ngrams
-      @p = IO.popen("#{command} -", 'r+')
+      @p = IO.popen("#{command} - 2>&1", 'r+')
     end
   end
 
   def tag(sentences)
     output = ''
     Dir.chdir("#{@path}/#{VERSION}/") do
-      p = IO.popen('java -jar languagetool-commandline.jar --taggeronly --api --language en-US -', 'r+')
+      p = IO.popen('java -jar languagetool-commandline.jar --taggeronly --api --language en-US - 2>/dev/null', 'r+')
       sentences.each { |sentence| p.write sentence }
       p.close_write
       line = p.readline
       loop do
         break if line == "<!--\n"
         output << line
-        line = p.readline
+        begin
+          line = p.readline
+        rescue EOFError
+          break
+        end
       end
       p.close
     end

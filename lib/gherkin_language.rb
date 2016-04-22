@@ -29,7 +29,7 @@ class GherkinLanguage
     end
     @references = {}
     @line_to_reference = {}
-    @exceptions = %w(SENTENCE_FRAGMENT) # sentences starting with 'When' are perfectly fine in gherkin
+    @exceptions = %w(SENTENCE_FRAGMENT ENGLISH_WORD_REPEAT_BEGINNING_RULE)
     @ngram = ngram
     @unknown_words = unknown_words
   end

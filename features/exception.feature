@@ -21,7 +21,7 @@ Feature: Exception
     Given a file named "test.feature" with:
       """
       Feature: Test
-        Scenario: Tag
+        Scenario: Scenario
           Given an test
           When execute
           Then pass
@@ -36,7 +36,7 @@ Feature: Exception
     Given a file named "test.feature" with:
       """
       Feature: Test
-        Scenario: Tag
+        Scenario: Scenario
           Given a test
           When exicute
           Then pass
@@ -46,7 +46,7 @@ Feature: Exception
       """
       [misspelling] MORFOLOGIK_RULE_EN_US
         Possible spelling mistake found
-        Context: Given a test when exicute then pass
+        Context: Test  Scenario  Given a test when exicute then pass
         Replacements: execute
         References: test.feature
 
