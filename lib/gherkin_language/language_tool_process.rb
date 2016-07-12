@@ -149,5 +149,6 @@ class LanguageToolProcess
     @errors = parse_errors errors
     @unknown_words = parse_unknown_words errors
     @p.close
+    raise 'language tool failed' unless $?.success?
   end
 end
