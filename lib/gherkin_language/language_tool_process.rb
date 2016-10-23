@@ -16,7 +16,7 @@ require 'digest'
 class LanguageToolProcess
   attr_accessor :errors, :unknown_words
 
-  VERSION = 'LanguageTool-3.4'.freeze
+  VERSION = 'LanguageTool-3.5'.freeze
   URL = "https://www.languagetool.org/download/#{VERSION}.zip".freeze
   NGRAM_VERSION = 'ngrams-en-20150817'.freeze
   NGRAM_URL = "https://languagetool.org/download/ngram-data/#{NGRAM_VERSION}.zip".freeze
@@ -149,6 +149,6 @@ class LanguageToolProcess
     @errors = parse_errors errors
     @unknown_words = parse_unknown_words errors
     @p.close
-    raise 'language tool failed' unless $?.success?
+    raise "language tool failed: #{errors}" unless $?.success?
   end
 end
