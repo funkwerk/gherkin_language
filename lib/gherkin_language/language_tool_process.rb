@@ -47,7 +47,7 @@ class LanguageToolProcess
   end
 
   def download(path, url)
-    system "wget --quiet #{url} -O /var/tmp/languagetool.zip"
+    system "wget -q -O /var/tmp/languagetool.zip #{url}"
     FileUtils.mkdir_p path
     system "unzip -qq -u /var/tmp/languagetool.zip -d #{path}"
     system 'rm /var/tmp/languagetool.zip'
