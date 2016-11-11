@@ -9,5 +9,5 @@ LATEST_TAG=$(gather_tags | tail -n 1)
 sed -i "s/VERSION \= 'LanguageTool-.*'/VERSION = 'LanguageTool-${LATEST_TAG}'/" lib/gherkin_language/language_tool_process.rb
 
 git add lib/gherkin_language/language_tool_process.rb
-git commit -m 'Using Languagetool ${LATEST_TAG}'
+git commit -m "Using Languagetool ${LATEST_TAG}"
 git push
