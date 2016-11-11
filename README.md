@@ -1,13 +1,12 @@
-Check Language of Gherkin Files
-===============================
+# Check Language of Gherkin Files
 
 [![Build Status](https://travis-ci.org/funkwerk/gherkin_language.svg)](https://travis-ci.org/funkwerk/gherkin_language)
+[![Latest Tag](https://img.shields.io/github/tag/funkwerk/gherkin_language.svg)](https://github.com/funkwerk/gherkin_language)
 
 This tool analyzes the language of gherkin files and report language errors.
 Currently just English is supported.
 
-Usage
------
+## Usage
 
 run `gherkin_language` on a list of files
 
@@ -29,9 +28,15 @@ By default it will accept unknown words. For warnings about unknown words add `-
 
 Get a readability report using `--readability`. It indicates, which files are not good readable.
 
+### Usage with Docker
 
-Glossary
---------
+Assuming there is a `test.feature` within the current folder, then the following command will check the feature file.
+
+```
+docker run -t -v $(pwd):/user -w /user gherkin/language test.feature
+```
+
+## Glossary
 
 It happens that there are words which are unknown to the dictionary.
 Once this happens think about if could use another word, that is more common. If there is no such word, add it to the directory-located glossary.
