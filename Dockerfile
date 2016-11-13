@@ -10,7 +10,7 @@ RUN apk --update add ruby ruby-dev build-base ruby-rdoc ruby-irb ca-certificates
  && rm /tmp/empty.feature \
  && apk del ruby-dev build-base ruby-rdoc ruby-irb ca-certificates openssl \
  && rm -rf /var/cache/apk \
- && ls -1 /tmp/LanguageTool*/org/languagetool/resource/ | grep -v en | xargs rm -rf /tmp/LanguageTool*/org/languagetool/resource/
+ && (cd /tmp/LanguageTool*/org/languagetool/resource/ && ls -1 . | grep -v en | xargs rm -rf)
 
 ENTRYPOINT ["gherkin_language"]
 CMD ["--help"]
