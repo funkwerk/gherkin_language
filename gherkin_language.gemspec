@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'gherkin_language'
-  s.version     = '0.4.3'
+  s.version     = '0.4.4'
   s.date        = '2016-11-13'
   s.summary     = 'Gherkin Language'
   s.description = 'Check language of Gherkin Files'
