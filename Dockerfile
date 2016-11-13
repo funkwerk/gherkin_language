@@ -2,7 +2,6 @@ FROM frolvlad/alpine-oraclejdk8:slim
 
 MAINTAINER think@hotmail.de
 
-# TODO: activate --ngram
 RUN apk --update add ruby ruby-dev build-base ruby-rdoc ruby-irb ca-certificates openssl \
  && gem install gherkin_language json --no-format-exec \
  && echo "Feature: Empty" > /tmp/empty.feature \
