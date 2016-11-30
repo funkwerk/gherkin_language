@@ -156,3 +156,25 @@ Feature: Sentences
       This is a sentence description
       Given test when I execute then verify
       """
+
+  Scenario: Quoted Terms
+    Given a file named "test.feature" with:
+      """
+      Feature: Test
+        Scenario Outline: Test
+          Given a user said «something»
+          When I execute «MyTestProgram.exe»
+          Then verify <test>
+
+        Examples: Test
+          | test                    |
+          | multiline \n also works |
+      """
+    When I run `ruby extract_sentences.rb`
+    Then it should pass with:
+      """
+      Test
+      Test
+      Test
+      Given a user said when I execute then verify
+      """

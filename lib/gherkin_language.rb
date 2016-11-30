@@ -105,7 +105,7 @@ class GherkinLanguage
 
     sentences = feature_names.call(parsed) + descriptions.call(parsed) + scenario_names(parsed) + sentences(parsed)
     sentences.select! { |sentence| sentence }
-    sentences.map { |sentence| sentence.gsub(/ «.+»/, '') }
+    sentences.map { |sentence| sentence.gsub(/ ?«[^«]*»/, '') }
   end
 
   def tag(files)
