@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/funkwerk/gherkin_language.svg)](https://travis-ci.org/funkwerk/gherkin_language)
 [![Latest Tag](https://img.shields.io/github/tag/funkwerk/gherkin_language.svg)](https://github.com/funkwerk/gherkin_language)
+[![Docker Build](https://img.shields.io/docker/automated/gherkin/language.svg)](https://hub.docker.com/r/gherkin/language/)
+[![Docker pulls](https://img.shields.io/docker/pulls/gherkin/language.svg)](https://hub.docker.com/r/gherkin/language/)
 
 This tool analyzes the language of gherkin files and report language errors.
 Currently just English is supported.
