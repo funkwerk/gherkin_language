@@ -38,5 +38,5 @@ task :lint do
 end
 
 task :format do
-  sh 'gherkin_format features/*.feature'
+  sh 'gherkin_format --replace features/*.feature'
 end
