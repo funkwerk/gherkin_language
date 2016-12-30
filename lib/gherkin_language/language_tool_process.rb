@@ -16,7 +16,7 @@ require 'digest'
 class LanguageToolProcess
   attr_accessor :errors, :unknown_words
 
-  VERSION = 'LanguageTool-3.5'.freeze
+  VERSION = 'LanguageTool-3.6'.freeze
   URL = "https://www.languagetool.org/download/#{VERSION}.zip".freeze
   NGRAM_VERSION = 'ngrams-en-20150817'.freeze
   NGRAM_URL = "https://languagetool.org/download/ngram-data/#{NGRAM_VERSION}.zip".freeze
