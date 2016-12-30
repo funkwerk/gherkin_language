@@ -167,8 +167,8 @@ Feature: Sentences
           Then verify <test>
 
         Examples: Test
-          | test                    |
-          | multiline \n also works |
+          | test                  |
+          | multiline\nalso works |
       """
     When I run `ruby extract_sentences.rb`
     Then it should pass with:
@@ -176,5 +176,6 @@ Feature: Sentences
       Test
       Test
       Test
-      Given a user said when I execute then verify
+      Given a user said replacement when I execute replacement then verify multiline
+      also works
       """
