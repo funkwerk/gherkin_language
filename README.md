@@ -4,6 +4,7 @@
 [![Latest Tag](https://img.shields.io/github/tag/funkwerk/gherkin_language.svg)](https://github.com/funkwerk/gherkin_language)
 [![Docker Build](https://img.shields.io/docker/automated/gherkin/language.svg)](https://hub.docker.com/r/gherkin/language/)
 [![Docker pulls](https://img.shields.io/docker/pulls/gherkin/language.svg)](https://hub.docker.com/r/gherkin/language/)
+[![Downloads](https://img.shields.io/gem/dt/gherkin_language.svg)](https://rubygems.org/gems/gherkin_language)
 
 This tool analyzes the language of gherkin files and report language errors.
 Currently just English is supported.
