@@ -49,3 +49,11 @@ docker run -t -v $(pwd):/user -w /user gherkin/language-ngram test.feature
 
 It happens that there are words which are unknown to the dictionary.
 Once this happens think about if could use another word, that is more common. If there is no such word, add it to the directory-located glossary.
+
+## Installation
+
+Install it with:
+
+`sudo gem install gherkin_language`
+
+After that `gherkin_language` executable is available.
